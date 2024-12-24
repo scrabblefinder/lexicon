@@ -36,6 +36,15 @@ export const Hero = () => {
     navigate(route);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Only apply maxLength restriction for "starting" and "ending" search types
+    if ((searchType === "starting" || searchType === "ending") && value.length > 1) {
+      return;
+    }
+    setSearchTerm(value);
+  };
+
   return (
     <div className="relative bg-primary py-24">
       <div className="container mx-auto px-4">
@@ -78,11 +87,10 @@ export const Hero = () => {
                 <div className="relative">
                   <Input
                     type="text"
-                    placeholder="Enter letters..."
+                    placeholder={searchType === "containing" ? "Enter letters (e.g., ber)..." : "Enter letter..."}
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={handleInputChange}
                     className="w-full px-6 py-4 rounded-xl text-primary bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-secondary placeholder:text-gray-500"
-                    maxLength={1}
                   />
                   <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 </div>
