@@ -23,7 +23,7 @@ const WordListPage = ({ type }: WordListPageProps) => {
   const [filteredWords, setFilteredWords] = useState<string[]>([]);
   const [groupedWords, setGroupedWords] = useState<WordGroup[]>([]);
   const [total, setTotal] = useState(0);
-  const [wordLength, setWordLength] = useState<string>("");
+  const [wordLength, setWordLength] = useState<string>("any");
   const [startingLetter, setStartingLetter] = useState<string>("");
   const [endingLetter, setEndingLetter] = useState<string>("");
   const [containsLetters, setContainsLetters] = useState<string>("");
@@ -124,22 +124,24 @@ const WordListPage = ({ type }: WordListPageProps) => {
         <h1 className="text-4xl font-montserrat font-bold mb-8">{getTitle()}</h1>
         
         <div className="mb-8 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <Select value={wordLength} onValueChange={setWordLength}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Filter by word length" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="any">Any length</SelectItem>
-                  {[3, 4, 5, 6, 7, 8, 9, 10].map((len) => (
-                    <SelectItem key={len} value={len.toString()}>
-                      {len} letters
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {type !== "length" && (
+              <div>
+                <Select value={wordLength} onValueChange={setWordLength}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Filter by word length" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="any">Any length</SelectItem>
+                    {[3, 4, 5, 6, 7, 8, 9, 10].map((len) => (
+                      <SelectItem key={len} value={len.toString()}>
+                        {len} letters
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <div>
               <Input
                 placeholder="Starts with letter"
