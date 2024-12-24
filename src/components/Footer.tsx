@@ -38,19 +38,22 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-montserrat font-bold text-lg mb-4">Features</h3>
+            <h3 className="font-montserrat font-bold text-lg mb-4">Our Tools</h3>
             <ul className="space-y-2">
-              <li className="flex items-center space-x-2">
-                <Globe className="h-4 w-4 text-secondary" />
-                <span>Comprehensive Word Lists</span>
+              <li>
+                <Link to="/" className="text-gray-300 hover:text-secondary transition-colors">
+                  Word Finder
+                </Link>
               </li>
-              <li className="flex items-center space-x-2">
-                <Shield className="h-4 w-4 text-secondary" />
-                <span>Safe & Reliable</span>
+              <li>
+                <Link to="/anagram-solver" className="text-gray-300 hover:text-secondary transition-colors">
+                  Anagram Solver
+                </Link>
               </li>
-              <li className="flex items-center space-x-2">
-                <BookOpen className="h-4 w-4 text-secondary" />
-                <span>Educational Resource</span>
+              <li>
+                <Link to="/word-unscrambler" className="text-gray-300 hover:text-secondary transition-colors">
+                  Word Unscrambler
+                </Link>
               </li>
             </ul>
           </div>
