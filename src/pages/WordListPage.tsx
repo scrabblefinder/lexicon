@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { useWords, filterWordsByStartingLetter, filterWordsByEndingLetter, filterWordsByContainingLetter, filterWordsByLength } from "@/services/wordService";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface WordListPageProps {
   type: "starting" | "ending" | "containing" | "length";
@@ -45,6 +46,27 @@ const WordListPage = ({ type }: WordListPageProps) => {
     }
   };
 
+  const groupWordsByLength = (words: string[]) => {
+    const grouped = words.reduce((acc: { [key: number]: string[] }, word) => {
+      const length = word.length;
+      if (!acc[length]) {
+        acc[length] = [];
+      }
+      acc[length].push(word);
+      return acc;
+    }, {});
+    
+    return Object.entries(grouped)
+      .sort(([a], [b]) => parseInt(a) - parseInt(b))
+      .map(([length, words]) => ({
+        length: parseInt(length),
+        words: words.sort(),
+        count: words.length
+      }));
+  };
+
+  const groupedWords = groupWordsByLength(filteredWords);
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -63,13 +85,22 @@ const WordListPage = ({ type }: WordListPageProps) => {
             <p className="text-lg mb-6 text-center text-gray-600">
               Found {total} words
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredWords.map((word, index) => (
-                <div
-                  key={index}
-                  className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
-                >
-                  {word}
+            <div className="space-y-8">
+              {groupedWords.map(({ length, words, count }) => (
+                <div key={length} className="bg-white rounded-lg shadow-md p-6">
+                  <h2 className="text-2xl font-bold mb-4 text-primary">
+                    {length} Letters ({count} words)
+                  </h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {words.map((word, index) => (
+                      <div
+                        key={index}
+                        className="p-2 bg-gray-50 rounded text-sm hover:bg-gray-100 transition-colors"
+                      >
+                        {word}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
