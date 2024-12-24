@@ -115,12 +115,12 @@ const WordListPage = ({ type }: WordListPageProps) => {
         <div className="mb-8 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="w-full sm:w-1/2">
-              <Select onValueChange={setWordLength} value={wordLength}>
+              <Select value={wordLength} onValueChange={setWordLength}>
                 <SelectTrigger>
                   <SelectValue placeholder="Filter by word length" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any length</SelectItem>
+                  <SelectItem value="all">Any length</SelectItem>
                   {[3, 4, 5, 6, 7, 8, 9, 10].map((len) => (
                     <SelectItem key={len} value={len.toString()}>
                       {len} letters
