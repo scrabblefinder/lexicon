@@ -55,7 +55,7 @@ const WordListPage = ({ type }: WordListPageProps) => {
     }
 
     // Apply additional filters
-    if (wordLength) {
+    if (wordLength && wordLength !== "any") {
       filtered = filtered.filter(word => word.length === parseInt(wordLength));
       console.log("After word length filter:", filtered.length);
     }
@@ -131,7 +131,7 @@ const WordListPage = ({ type }: WordListPageProps) => {
                   <SelectValue placeholder="Filter by word length" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Any length</SelectItem>
+                  <SelectItem value="any">Any length</SelectItem>
                   {[3, 4, 5, 6, 7, 8, 9, 10].map((len) => (
                     <SelectItem key={len} value={len.toString()}>
                       {len} letters
