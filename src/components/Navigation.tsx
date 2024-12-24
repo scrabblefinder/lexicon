@@ -11,17 +11,8 @@ export const Navigation = () => {
             <span className="font-montserrat font-bold text-2xl text-white">Word-List.com</span>
           </Link>
           <div className="hidden md:flex space-x-8">
-            <Link to="/words-starting-with" className="text-white hover:text-secondary transition-colors">
-              Starting With
-            </Link>
-            <Link to="/words-ending-with" className="text-white hover:text-secondary transition-colors">
-              Ending With
-            </Link>
-            <Link to="/words-containing" className="text-white hover:text-secondary transition-colors">
-              Containing
-            </Link>
-            <Link to="/words-by-length" className="text-white hover:text-secondary transition-colors">
-              By Length
+            <Link to="/" className="text-white hover:text-secondary transition-colors">
+              Homepage
             </Link>
             <Link to="/anagram-solver" className="text-white hover:text-secondary transition-colors">
               Anagram Solver
