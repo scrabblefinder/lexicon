@@ -14,9 +14,10 @@ const Index = () => {
         <h2 className="text-3xl font-montserrat font-bold mb-8 text-center">
           Browse Word Lists
         </h2>
-        <WordList title="Words Starting With" baseUrl="/words-starting-with" />
-        <WordList title="Words Ending With" baseUrl="/words-ending-with" />
-        <WordList title="Words Containing" baseUrl="/words-containing" />
+        <WordList title="Words Starting With" baseUrl="/words-starting-with" type="letter" />
+        <WordList title="Words Ending With" baseUrl="/words-ending-with" type="letter" />
+        <WordList title="Words Containing" baseUrl="/words-containing" type="letter" />
+        <WordList title="Words by Length" baseUrl="/words-by-length" type="length" />
       </div>
       <Article />
     </div>
