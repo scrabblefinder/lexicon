@@ -17,9 +17,7 @@ export const Hero = () => {
     if (!searchTerm && !wordLength) return;
 
     let route = "";
-    if (wordLength) {
-      route = `/words-by-length/${wordLength}`;
-    } else {
+    if (searchTerm) {
       switch (searchType) {
         case "starting":
           route = `/words-starting-with/${searchTerm}`;
@@ -30,6 +28,15 @@ export const Hero = () => {
         case "containing":
           route = `/words-containing/${searchTerm}`;
           break;
+      }
+    }
+
+    // If both length and searchTerm are present, add length as a query parameter
+    if (wordLength) {
+      if (route) {
+        route += `?length=${wordLength}`;
+      } else {
+        route = `/words-by-length/${wordLength}`;
       }
     }
 
