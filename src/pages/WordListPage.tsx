@@ -3,8 +3,12 @@ import { Navigation } from "@/components/Navigation";
 import { useWords, filterWordsByStartingLetter, filterWordsByEndingLetter, filterWordsByContainingLetter, filterWordsByLength } from "@/services/wordService";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const WordListPage = () => {
-  const { letter, length, type } = useParams();
+interface WordListPageProps {
+  type: "starting" | "ending" | "containing" | "length";
+}
+
+const WordListPage = ({ type }: WordListPageProps) => {
+  const { letter, length } = useParams();
   const { data: words, isLoading } = useWords();
 
   const getFilteredWords = () => {
