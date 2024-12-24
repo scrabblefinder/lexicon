@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import WordListPage from "./pages/WordListPage";
 import AnagramSolver from "./pages/AnagramSolver";
+import WordUnscrambler from "./pages/WordUnscrambler";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/words-containing/:letter" element={<WordListPage type="containing" />} />
           <Route path="/words-by-length/:length" element={<WordListPage type="length" />} />
           <Route path="/anagram-solver" element={<AnagramSolver />} />
+          <Route path="/word-unscrambler" element={<WordUnscrambler />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
         </Routes>
