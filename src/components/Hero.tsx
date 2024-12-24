@@ -9,47 +9,36 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export const Hero = () => {
   const navigate = useNavigate();
   const [searchType, setSearchType] = useState("starting");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [startLetter, setStartLetter] = useState("");
+  const [endLetter, setEndLetter] = useState("");
   const [wordLength, setWordLength] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!searchTerm && !wordLength) return;
+    if (!startLetter && !endLetter && !wordLength) return;
 
     let route = "";
-    if (searchTerm) {
-      switch (searchType) {
-        case "starting":
-          route = `/words-starting-with/${searchTerm}`;
-          break;
-        case "ending":
-          route = `/words-ending-with/${searchTerm}`;
-          break;
-        case "containing":
-          route = `/words-containing/${searchTerm}`;
-          break;
-      }
+    
+    // Handle combined search (starting and ending)
+    if (searchType === "combined" && startLetter && endLetter) {
+      route = `/words-starting-with/${startLetter}?ending=${endLetter}`;
+    } else if (startLetter && searchType === "starting") {
+      route = `/words-starting-with/${startLetter}`;
+    } else if (endLetter && searchType === "ending") {
+      route = `/words-ending-with/${endLetter}`;
     }
 
-    // If both length and searchTerm are present, add length as a query parameter
+    // If length is specified, add it as a query parameter
     if (wordLength) {
-      if (route) {
-        route += `?length=${wordLength}`;
-      } else {
-        route = `/words-by-length/${wordLength}`;
-      }
+      route += route.includes('?') ? `&length=${wordLength}` : `?length=${wordLength}`;
+    }
+
+    // If no specific letter search but length is specified
+    if (!route && wordLength) {
+      route = `/words-by-length/${wordLength}`;
     }
 
     navigate(route);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Only apply maxLength restriction for "starting" and "ending" search types
-    if ((searchType === "starting" || searchType === "ending") && value.length > 1) {
-      return;
-    }
-    setSearchTerm(value);
   };
 
   return (
@@ -85,22 +74,54 @@ export const Hero = () => {
                       <Label htmlFor="ending" className="text-white text-base">End with...</Label>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="containing" id="containing" className="border-white" />
-                      <Label htmlFor="containing" className="text-white text-base">Contains...</Label>
+                      <RadioGroupItem value="combined" id="combined" className="border-white" />
+                      <Label htmlFor="combined" className="text-white text-base">Start and end with...</Label>
                     </div>
                   </RadioGroup>
                 </div>
 
-                <div className="relative">
-                  <Input
-                    type="text"
-                    placeholder={searchType === "containing" ? "Enter letters (e.g., ber)..." : "Enter letter..."}
-                    value={searchTerm}
-                    onChange={handleInputChange}
-                    className="w-full px-6 py-4 rounded-xl text-primary bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-secondary placeholder:text-gray-500"
-                  />
-                  <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                </div>
+                {searchType === "combined" ? (
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <Input
+                        type="text"
+                        placeholder="Starts with letter..."
+                        value={startLetter}
+                        onChange={(e) => setStartLetter(e.target.value.slice(0, 1))}
+                        className="w-full px-6 py-4 rounded-xl text-primary bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-secondary placeholder:text-gray-500"
+                        maxLength={1}
+                      />
+                    </div>
+                    <div className="relative">
+                      <Input
+                        type="text"
+                        placeholder="Ends with letter..."
+                        value={endLetter}
+                        onChange={(e) => setEndLetter(e.target.value.slice(0, 1))}
+                        className="w-full px-6 py-4 rounded-xl text-primary bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-secondary placeholder:text-gray-500"
+                        maxLength={1}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <Input
+                      type="text"
+                      placeholder={searchType === "containing" ? "Enter letters (e.g., ber)..." : "Enter letter..."}
+                      value={searchType === "starting" ? startLetter : endLetter}
+                      onChange={(e) => {
+                        if (searchType === "starting") {
+                          setStartLetter(e.target.value.slice(0, 1));
+                        } else {
+                          setEndLetter(e.target.value.slice(0, 1));
+                        }
+                      }}
+                      className="w-full px-6 py-4 rounded-xl text-primary bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-secondary placeholder:text-gray-500"
+                      maxLength={1}
+                    />
+                    <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  </div>
+                )}
               </div>
 
               {/* Word Length Section */}
