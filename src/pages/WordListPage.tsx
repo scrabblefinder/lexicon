@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useWords } from "@/services/wordService";
+import { WordCard } from "@/components/WordCard";
 
 interface WordGroup {
   length: number;
@@ -151,12 +152,7 @@ const WordListPage = ({ type }: WordListPageProps) => {
             </h2>
             <div className="flex flex-wrap gap-2">
               {words.map((word) => (
-                <span
-                  key={word}
-                  className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  {word}
-                </span>
+                <WordCard key={word} word={word} />
               ))}
             </div>
           </div>
