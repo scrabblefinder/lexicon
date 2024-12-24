@@ -50,10 +50,10 @@ export const Hero = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h1 className="font-montserrat text-6xl font-bold text-white leading-tight">
-            Find the Perfect Words
+            Generate Your Word Lists
           </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-            Explore our comprehensive collection of word lists. Whether you're looking for words that start with a specific letter, end with certain characters, or match a particular length - we've got you covered.
+            Use our search below to create your desired word lists. Make sure to select the word length and whatever letters you are looking for
           </p>
         </div>
 
