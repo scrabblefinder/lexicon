@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Hero = () => {
   const navigate = useNavigate();
@@ -13,7 +14,8 @@ export const Hero = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!searchTerm) return;
+    if (!searchTerm && searchType !== "length") return;
+    if (searchType === "length" && !wordLength) return;
 
     let route = "";
     switch (searchType) {
@@ -26,10 +28,9 @@ export const Hero = () => {
       case "containing":
         route = `/words-containing/${searchTerm}`;
         break;
-    }
-
-    if (wordLength) {
-      route = `/words-by-length/${wordLength}`;
+      case "length":
+        route = `/words-by-length/${wordLength}`;
+        break;
     }
 
     navigate(route);
@@ -84,15 +85,18 @@ export const Hero = () => {
                 </div>
               ) : (
                 <div className="flex-1">
-                  <Input
-                    type="number"
-                    placeholder="Enter word length..."
-                    value={wordLength}
-                    onChange={(e) => setWordLength(e.target.value)}
-                    className="w-full px-6 py-4 rounded-full text-primary focus:outline-none focus:ring-2 focus:ring-secondary"
-                    min="1"
-                    max="20"
-                  />
+                  <Select value={wordLength} onValueChange={setWordLength}>
+                    <SelectTrigger className="w-full px-6 py-4 rounded-full text-primary focus:outline-none focus:ring-2 focus:ring-secondary bg-white">
+                      <SelectValue placeholder="Select word length" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((length) => (
+                        <SelectItem key={length} value={length.toString()}>
+                          {length} letters
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               )}
               <button
