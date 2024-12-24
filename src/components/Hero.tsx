@@ -37,36 +37,43 @@ export const Hero = () => {
   };
 
   return (
-    <div className="relative bg-primary py-20 text-white">
+    <div className="relative bg-primary py-24">
       <div className="container mx-auto px-4">
-        <h1 className="font-montserrat text-5xl font-bold mb-6 text-center">
-          Find the Perfect Words
-        </h1>
-        <p className="text-xl mb-8 text-center max-w-2xl mx-auto">
-          Explore our comprehensive collection of word lists. Whether you're looking for words that start with a specific letter, end with certain characters, or match a particular length - we've got you covered.
-        </p>
-        <form onSubmit={handleSearch} className="max-w-xl mx-auto space-y-6">
-          <div className="bg-white/10 p-6 rounded-lg space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <RadioGroup
-                  defaultValue="starting"
-                  onValueChange={setSearchType}
-                  className="space-y-2"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="starting" id="starting" />
-                    <Label htmlFor="starting" className="text-white">Start with...</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="ending" id="ending" />
-                    <Label htmlFor="ending" className="text-white">End with...</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="containing" id="containing" />
-                    <Label htmlFor="containing" className="text-white">Contains...</Label>
-                  </div>
-                </RadioGroup>
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <h1 className="font-montserrat text-6xl font-bold text-white leading-tight">
+            Find the Perfect Words
+          </h1>
+          <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+            Explore our comprehensive collection of word lists. Whether you're looking for words that start with a specific letter, end with certain characters, or match a particular length - we've got you covered.
+          </p>
+        </div>
+
+        <form onSubmit={handleSearch} className="mt-12 max-w-3xl mx-auto">
+          <div className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Letter Search Section */}
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <Label className="text-white text-lg font-semibold">Search by Letters</Label>
+                  <RadioGroup
+                    defaultValue="starting"
+                    onValueChange={setSearchType}
+                    className="space-y-3"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="starting" id="starting" className="border-white" />
+                      <Label htmlFor="starting" className="text-white text-base">Start with...</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="ending" id="ending" className="border-white" />
+                      <Label htmlFor="ending" className="text-white text-base">End with...</Label>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <RadioGroupItem value="containing" id="containing" className="border-white" />
+                      <Label htmlFor="containing" className="text-white text-base">Contains...</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
 
                 <div className="relative">
                   <Input
@@ -74,35 +81,38 @@ export const Hero = () => {
                     placeholder="Enter letters..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full px-6 py-4 rounded-full text-primary focus:outline-none focus:ring-2 focus:ring-secondary"
+                    className="w-full px-6 py-4 rounded-xl text-primary bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-secondary placeholder:text-gray-500"
                     maxLength={1}
                   />
-                  <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <Label className="text-white block">Word Length</Label>
-                <Select value={wordLength} onValueChange={setWordLength}>
-                  <SelectTrigger className="w-full px-6 py-4 rounded-full text-primary focus:outline-none focus:ring-2 focus:ring-secondary bg-white">
-                    <SelectValue placeholder="Select length..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((length) => (
-                      <SelectItem key={length} value={length.toString()}>
-                        {length} letters
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              {/* Word Length Section */}
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <Label className="text-white text-lg font-semibold">Word Length</Label>
+                  <Select value={wordLength} onValueChange={setWordLength}>
+                    <SelectTrigger className="w-full px-6 py-4 rounded-xl text-primary bg-white/90 backdrop-blur-sm border-0 focus:ring-2 focus:ring-secondary h-[52px]">
+                      <SelectValue placeholder="Select length..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((length) => (
+                        <SelectItem key={length} value={length.toString()}>
+                          {length} letters
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-secondary hover:bg-secondary/90 text-white px-8 py-4 rounded-full transition-colors font-semibold text-lg"
+              className="w-full mt-8 bg-secondary hover:bg-secondary/90 text-primary font-semibold px-8 py-4 rounded-xl transition-colors text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
             >
-              Search
+              Search Words
             </button>
           </div>
         </form>
