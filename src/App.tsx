@@ -15,6 +15,10 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/words-starting-with/:letter" element={<Index />} />
+          <Route path="/words-ending-with/:letter" element={<Index />} />
+          <Route path="/words-containing/:letter" element={<Index />} />
+          <Route path="/words-by-length/:length" element={<Index />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
