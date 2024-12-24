@@ -2,31 +2,59 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { useWords } from "@/services/wordService";
 
 export const AnagramSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const { toast } = useToast();
+  const { data: words } = useWords();
 
-  const findAnagrams = (word: string) => {
-    // This is a simple implementation. In a real app, you'd want to use a proper word dictionary
-    // and a more sophisticated algorithm
-    const letters = word.toLowerCase().split("").sort().join("");
-    const isWildcard = word.includes("?");
+  const findAnagrams = (input: string) => {
+    if (!words) return [];
+
+    const searchPattern = input.toLowerCase();
+    const hasWildcard = searchPattern.includes('?');
     
-    // For demo purposes, returning some sample anagrams
-    // In a real implementation, you would:
-    // 1. Use a proper word dictionary
-    // 2. Handle wildcards properly
-    // 3. Implement proper anagram finding algorithm
-    const sampleResults = [
-      "sample",
-      "anagram",
-      "result",
-      "demo",
-    ];
+    // Sort the letters of the search term (excluding wildcards)
+    const sortedSearchLetters = searchPattern
+      .replace(/\?/g, '')
+      .split('')
+      .sort()
+      .join('');
     
-    return sampleResults;
+    const wildcardCount = (searchPattern.match(/\?/g) || []).length;
+    const searchLength = searchPattern.length;
+
+    return words.filter(word => {
+      // Only consider words of the same length as the search term
+      if (word.length !== searchLength) return false;
+
+      if (!hasWildcard) {
+        // For non-wildcard searches, simply compare sorted letters
+        return word.toLowerCase().split('').sort().join('') === sortedSearchLetters;
+      } else {
+        // For wildcard searches, we need to check if the known letters match
+        const wordLower = word.toLowerCase();
+        
+        // Check each position where we have a known letter (not a wildcard)
+        for (let i = 0; i < searchPattern.length; i++) {
+          if (searchPattern[i] !== '?' && searchPattern[i] !== wordLower[i]) {
+            return false;
+          }
+        }
+
+        // If we get here, the known letters match
+        // Now verify that the remaining letters could form a valid anagram
+        const remainingLetters = wordLower
+          .split('')
+          .filter((_, index) => searchPattern[index] === '?')
+          .sort()
+          .join('');
+
+        return remainingLetters.length === wildcardCount;
+      }
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -41,6 +69,7 @@ export const AnagramSearch = () => {
     }
     
     const anagrams = findAnagrams(searchTerm);
+    console.log(`Found ${anagrams.length} anagrams for "${searchTerm}":`, anagrams);
     setResults(anagrams);
   };
 
