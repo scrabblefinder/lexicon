@@ -24,10 +24,12 @@ const WordListPage = ({ type }: WordListPageProps) => {
   const [groupedWords, setGroupedWords] = useState<WordGroup[]>([]);
   const [total, setTotal] = useState(0);
   const [wordLength, setWordLength] = useState<string>("");
+  const [startingLetter, setStartingLetter] = useState<string>("");
   const [endingLetter, setEndingLetter] = useState<string>("");
+  const [containsLetters, setContainsLetters] = useState<string>("");
 
   useEffect(() => {
-    console.log("Starting filtering process with:", { type, letter, length, wordLength, endingLetter });
+    console.log("Starting filtering process with:", { type, letter, length, wordLength, startingLetter, endingLetter, containsLetters });
     console.log("Total words available:", words.length);
 
     if (!words.length) {
@@ -57,14 +59,22 @@ const WordListPage = ({ type }: WordListPageProps) => {
       filtered = filtered.filter(word => word.length === parseInt(wordLength));
       console.log("After word length filter:", filtered.length);
     }
+    if (startingLetter) {
+      filtered = filtered.filter(word => word.toLowerCase().startsWith(startingLetter.toLowerCase()));
+      console.log("After starting letter filter:", filtered.length);
+    }
     if (endingLetter) {
       filtered = filtered.filter(word => word.toLowerCase().endsWith(endingLetter.toLowerCase()));
       console.log("After ending letter filter:", filtered.length);
     }
+    if (containsLetters) {
+      filtered = filtered.filter(word => word.toLowerCase().includes(containsLetters.toLowerCase()));
+      console.log("After contains filter:", filtered.length);
+    }
 
     console.log("Final filtered words count:", filtered.length);
     setFilteredWords(filtered);
-  }, [words, type, letter, length, wordLength, endingLetter]);
+  }, [words, type, letter, length, wordLength, startingLetter, endingLetter, containsLetters]);
 
   useEffect(() => {
     const grouped = filteredWords.reduce<Record<number, string[]>>((acc, word) => {
@@ -114,14 +124,14 @@ const WordListPage = ({ type }: WordListPageProps) => {
         <h1 className="text-4xl font-montserrat font-bold mb-8">{getTitle()}</h1>
         
         <div className="mb-8 space-y-4">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="w-full sm:w-1/2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
               <Select value={wordLength} onValueChange={setWordLength}>
                 <SelectTrigger>
                   <SelectValue placeholder="Filter by word length" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Any length</SelectItem>
+                  <SelectItem value="">Any length</SelectItem>
                   {[3, 4, 5, 6, 7, 8, 9, 10].map((len) => (
                     <SelectItem key={len} value={len.toString()}>
                       {len} letters
@@ -130,12 +140,27 @@ const WordListPage = ({ type }: WordListPageProps) => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="w-full sm:w-1/2">
+            <div>
               <Input
-                placeholder="Filter by ending letter"
+                placeholder="Starts with letter"
+                value={startingLetter}
+                onChange={(e) => setStartingLetter(e.target.value)}
+                maxLength={1}
+              />
+            </div>
+            <div>
+              <Input
+                placeholder="Ends with letter"
                 value={endingLetter}
                 onChange={(e) => setEndingLetter(e.target.value)}
                 maxLength={1}
+              />
+            </div>
+            <div>
+              <Input
+                placeholder="Contains letters"
+                value={containsLetters}
+                onChange={(e) => setContainsLetters(e.target.value)}
               />
             </div>
           </div>
