@@ -3,10 +3,11 @@ import { Categories } from "@/components/Categories";
 import { Article } from "@/components/Article";
 import { Navigation } from "@/components/Navigation";
 import { WordList } from "@/components/WordList";
+import { Footer } from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navigation />
       <Hero />
       <Categories />
@@ -20,6 +21,7 @@ const Index = () => {
         <WordList title="Words by Length" baseUrl="/words-by-length" type="length" />
       </div>
       <Article />
+      <Footer />
     </div>
   );
 };
