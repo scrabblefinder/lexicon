@@ -26,26 +26,42 @@ const WordListPage = ({ type }: WordListPageProps) => {
   const [endingLetter, setEndingLetter] = useState<string>("");
 
   useEffect(() => {
+    console.log("Starting filtering process with:", { type, letter, length, wordLength, endingLetter });
+    console.log("Total words available:", words.length);
+
+    if (!words.length) {
+      console.log("No words available yet");
+      return;
+    }
+
     let filtered = [...words];
 
+    // Apply primary filter based on route type
     if (type === "starting" && letter) {
       filtered = filtered.filter(word => word.toLowerCase().startsWith(letter.toLowerCase()));
+      console.log("After starting filter:", filtered.length);
     } else if (type === "ending" && letter) {
       filtered = filtered.filter(word => word.toLowerCase().endsWith(letter.toLowerCase()));
+      console.log("After ending filter:", filtered.length);
     } else if (type === "containing" && letter) {
       filtered = filtered.filter(word => word.toLowerCase().includes(letter.toLowerCase()));
+      console.log("After containing filter:", filtered.length);
     } else if (type === "length" && length) {
       filtered = filtered.filter(word => word.length === parseInt(length));
+      console.log("After length filter:", filtered.length);
     }
 
     // Apply additional filters
     if (wordLength) {
       filtered = filtered.filter(word => word.length === parseInt(wordLength));
+      console.log("After word length filter:", filtered.length);
     }
     if (endingLetter) {
       filtered = filtered.filter(word => word.toLowerCase().endsWith(endingLetter.toLowerCase()));
+      console.log("After ending letter filter:", filtered.length);
     }
 
+    console.log("Final filtered words count:", filtered.length);
     setFilteredWords(filtered);
   }, [words, type, letter, length, wordLength, endingLetter]);
 

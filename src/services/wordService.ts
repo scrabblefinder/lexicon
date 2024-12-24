@@ -23,36 +23,31 @@ export const useWords = () => {
   });
 };
 
-export const filterWordsByStartingLetter = (words: string[], letter: string): WordListResponse => {
-  console.log("Filtering words starting with:", letter);
-  const filteredWords = words.filter(word => word.toLowerCase().startsWith(letter.toLowerCase()));
-  console.log("Found words:", filteredWords.length);
-  return {
-    words: filteredWords,
-    total: filteredWords.length
-  };
+// Helper function to log filtering results
+const logFilterResults = (filterType: string, input: string, results: string[]) => {
+  console.log(`Filtering by ${filterType}:`, { input, resultCount: results.length });
 };
 
-export const filterWordsByEndingLetter = (words: string[], letter: string): WordListResponse => {
-  const filteredWords = words.filter(word => word.toLowerCase().endsWith(letter.toLowerCase()));
-  return {
-    words: filteredWords,
-    total: filteredWords.length
-  };
+export const filterWordsByStartingLetter = (words: string[], letter: string): string[] => {
+  const filtered = words.filter(word => word.toLowerCase().startsWith(letter.toLowerCase()));
+  logFilterResults('starting letter', letter, filtered);
+  return filtered;
 };
 
-export const filterWordsByContainingLetter = (words: string[], letter: string): WordListResponse => {
-  const filteredWords = words.filter(word => word.toLowerCase().includes(letter.toLowerCase()));
-  return {
-    words: filteredWords,
-    total: filteredWords.length
-  };
+export const filterWordsByEndingLetter = (words: string[], letter: string): string[] => {
+  const filtered = words.filter(word => word.toLowerCase().endsWith(letter.toLowerCase()));
+  logFilterResults('ending letter', letter, filtered);
+  return filtered;
 };
 
-export const filterWordsByLength = (words: string[], length: number): WordListResponse => {
-  const filteredWords = words.filter(word => word.length === length);
-  return {
-    words: filteredWords,
-    total: filteredWords.length
-  };
+export const filterWordsByContainingLetter = (words: string[], letter: string): string[] => {
+  const filtered = words.filter(word => word.toLowerCase().includes(letter.toLowerCase()));
+  logFilterResults('containing letter', letter, filtered);
+  return filtered;
+};
+
+export const filterWordsByLength = (words: string[], length: number): string[] => {
+  const filtered = words.filter(word => word.length === length);
+  logFilterResults('length', length.toString(), filtered);
+  return filtered;
 };
