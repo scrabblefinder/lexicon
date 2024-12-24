@@ -14,23 +14,23 @@ export const Hero = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!searchTerm && searchType !== "length") return;
-    if (searchType === "length" && !wordLength) return;
+    if (!searchTerm && !wordLength) return;
 
     let route = "";
-    switch (searchType) {
-      case "starting":
-        route = `/words-starting-with/${searchTerm}`;
-        break;
-      case "ending":
-        route = `/words-ending-with/${searchTerm}`;
-        break;
-      case "containing":
-        route = `/words-containing/${searchTerm}`;
-        break;
-      case "length":
-        route = `/words-by-length/${wordLength}`;
-        break;
+    if (wordLength) {
+      route = `/words-by-length/${wordLength}`;
+    } else {
+      switch (searchType) {
+        case "starting":
+          route = `/words-starting-with/${searchTerm}`;
+          break;
+        case "ending":
+          route = `/words-ending-with/${searchTerm}`;
+          break;
+        case "containing":
+          route = `/words-containing/${searchTerm}`;
+          break;
+      }
     }
 
     navigate(route);
@@ -47,32 +47,28 @@ export const Hero = () => {
         </p>
         <form onSubmit={handleSearch} className="max-w-xl mx-auto space-y-6">
           <div className="bg-white/10 p-6 rounded-lg space-y-4">
-            <RadioGroup
-              defaultValue="starting"
-              onValueChange={setSearchType}
-              className="flex flex-wrap gap-4"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="starting" id="starting" />
-                <Label htmlFor="starting" className="text-white">Words Starting With</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="ending" id="ending" />
-                <Label htmlFor="ending" className="text-white">Words Ending With</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="containing" id="containing" />
-                <Label htmlFor="containing" className="text-white">Words Containing</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="length" id="length" />
-                <Label htmlFor="length" className="text-white">Words by Length</Label>
-              </div>
-            </RadioGroup>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <RadioGroup
+                  defaultValue="starting"
+                  onValueChange={setSearchType}
+                  className="space-y-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="starting" id="starting" />
+                    <Label htmlFor="starting" className="text-white">Start with...</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="ending" id="ending" />
+                    <Label htmlFor="ending" className="text-white">End with...</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="containing" id="containing" />
+                    <Label htmlFor="containing" className="text-white">Contains...</Label>
+                  </div>
+                </RadioGroup>
 
-            <div className="flex gap-4">
-              {searchType !== "length" ? (
-                <div className="flex-1 relative">
+                <div className="relative">
                   <Input
                     type="text"
                     placeholder="Enter letters..."
@@ -83,29 +79,31 @@ export const Hero = () => {
                   />
                   <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
-              ) : (
-                <div className="flex-1">
-                  <Select value={wordLength} onValueChange={setWordLength}>
-                    <SelectTrigger className="w-full px-6 py-4 rounded-full text-primary focus:outline-none focus:ring-2 focus:ring-secondary bg-white">
-                      <SelectValue placeholder="Select word length" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((length) => (
-                        <SelectItem key={length} value={length.toString()}>
-                          {length} letters
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-              <button
-                type="submit"
-                className="bg-secondary hover:bg-secondary/90 text-white px-8 py-2 rounded-full transition-colors"
-              >
-                Search
-              </button>
+              </div>
+
+              <div className="space-y-4">
+                <Label className="text-white block">Word Length</Label>
+                <Select value={wordLength} onValueChange={setWordLength}>
+                  <SelectTrigger className="w-full px-6 py-4 rounded-full text-primary focus:outline-none focus:ring-2 focus:ring-secondary bg-white">
+                    <SelectValue placeholder="Select length..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((length) => (
+                      <SelectItem key={length} value={length.toString()}>
+                        {length} letters
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
+
+            <button
+              type="submit"
+              className="w-full bg-secondary hover:bg-secondary/90 text-white px-8 py-4 rounded-full transition-colors font-semibold text-lg"
+            >
+              Search
+            </button>
           </div>
         </form>
       </div>
