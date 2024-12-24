@@ -23,6 +23,9 @@ export const Navigation = () => {
             <Link to="/words-by-length" className="text-white hover:text-secondary transition-colors">
               By Length
             </Link>
+            <Link to="/anagram-solver" className="text-white hover:text-secondary transition-colors">
+              Anagram Solver
+            </Link>
           </div>
         </div>
       </div>
